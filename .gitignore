@@ -1,0 +1,30 @@
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+
+# Private planning docs
+idea.md
+
+# Foundry
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+contracts/lib/
+
+# Node / Next.js
+node_modules/
+web/node_modules/
+web/.next/
+web/out/
+web/.env*.local
+
+# Agent / skill tooling — not part of the product
+.agents/
+.claude/
+.codex/
+skills-lock.json
+
+# Misc
+.DS_Store
+*.log
