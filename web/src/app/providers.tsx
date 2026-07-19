@@ -9,6 +9,8 @@ import { http } from "wagmi";
 import { monadTestnet } from "@/lib/chain";
 
 const PARA_API_KEY = process.env.NEXT_PUBLIC_PARA_API_KEY ?? "";
+const WALLETCONNECT_PROJECT_ID =
+  process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? "";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -31,6 +33,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
           recoverySecretStepEnabled: true,
         }}
         externalWalletConfig={{
+          walletConnect: { projectId: WALLETCONNECT_PROJECT_ID },
           evmConnector: {
             config: {
               chains: [monadTestnet],

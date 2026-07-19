@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { isAddress, parseEther } from "viem";
@@ -75,18 +75,30 @@ export default function CreatePage() {
   const bondWei = stakeWei !== null ? stakeWei / 5n : null;
   const matchBySec = toUnix(matchBy);
   const resolveBySec = toUnix(resolveBy);
-  const nowSec = Math.floor(Date.now() / 1000);
+  // Kept fresh via an effect (not read during render) so the "must be in the
+  // future" check can't go stale while the form sits open — a stale value slips
+  // past client validation and reverts on-chain with "matchBy in past".
+  const [nowSec, setNowSec] = useState(0);
+  useEffect(() => {
+    const tick = () => setNowSec(Math.floor(Date.now() / 1000));
+    tick();
+    const t = setInterval(tick, 30_000);
+    return () => clearInterval(t);
+  }, []);
 
   const errors = useMemo(() => {
     const e: Record<string, string> = {};
     if (!question.trim()) e.question = "Describe what the bet is on.";
     if (stakeStr && stakeWei === null) e.stake = "Enter a positive amount.";
-    if (
-      visibility === Visibility.Private &&
-      counterparty.trim() &&
-      !isAddress(counterparty.trim())
-    )
-      e.counterparty = "Not a valid address.";
+    if (visibility === Visibility.Private && counterparty.trim()) {
+      if (!isAddress(counterparty.trim()))
+        e.counterparty = "Not a valid address.";
+      else if (
+        address &&
+        counterparty.trim().toLowerCase() === address.toLowerCase()
+      )
+        e.counterparty = "The counterparty can't be you.";
+    }
     if (!arbiter.trim()) e.arbiter = "An arbiter address is required.";
     else if (!isAddress(arbiter.trim())) e.arbiter = "Not a valid address.";
     else if (address && arbiter.trim().toLowerCase() === address.toLowerCase())

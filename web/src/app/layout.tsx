@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Betr — onchain bets, settled",
+  title: "Betr",
   description:
     "Stake a bet with anyone. The winner gets paid automatically onchain — no arguing, no chasing. Built on Monad.",
 };
