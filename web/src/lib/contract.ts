@@ -8,6 +8,13 @@ export const BETR_ADDRESS =
 export const ZERO_ADDRESS =
   "0x0000000000000000000000000000000000000000" as const;
 
+/**
+ * Betr's default arbiter — used when a creator doesn't name one. The contract
+ * requires a non-zero arbiter, so the UI substitutes this admin wallet.
+ */
+export const DEFAULT_ARBITER =
+  "0xF69674F579Fa076B10DB209E7531A5bfEef9C1AB" as const;
+
 export enum BetState {
   Open = 0,
   Active = 1,

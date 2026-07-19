@@ -28,11 +28,12 @@ import { useTx } from "@/hooks/useTx";
 import {
   BETR_ADDRESS,
   betrAbi,
+  DEFAULT_ARBITER,
   Visibility,
   ZERO_ADDRESS,
 } from "@/lib/contract";
 import { monadTestnet } from "@/lib/chain";
-import { formatMon, toDatetimeLocal } from "@/lib/format";
+import { formatMon, shortAddr, toDatetimeLocal } from "@/lib/format";
 
 function safeParseEther(v: string): bigint | null {
   try {
@@ -99,15 +100,26 @@ export default function CreatePage() {
       )
         e.counterparty = "The counterparty can't be you.";
     }
-    if (!arbiter.trim()) e.arbiter = "An arbiter address is required.";
-    else if (!isAddress(arbiter.trim())) e.arbiter = "Not a valid address.";
-    else if (address && arbiter.trim().toLowerCase() === address.toLowerCase())
-      e.arbiter = "The arbiter can't be you.";
-    else if (
-      counterparty.trim() &&
-      arbiter.trim().toLowerCase() === counterparty.trim().toLowerCase()
-    )
-      e.arbiter = "The arbiter can't be the counterparty.";
+    // Arbiter is optional — left blank, it falls back to Betr's default arbiter.
+    const arb = arbiter.trim();
+    if (arb && !isAddress(arb)) {
+      e.arbiter = "Not a valid address.";
+    } else {
+      const usingDefault = !arb;
+      const effective = (arb || DEFAULT_ARBITER).toLowerCase();
+      if (address && effective === address.toLowerCase())
+        e.arbiter = usingDefault
+          ? "You're Betr's arbiter — name someone else for this bet."
+          : "The arbiter can't be you.";
+      else if (
+        visibility === Visibility.Private &&
+        counterparty.trim() &&
+        effective === counterparty.trim().toLowerCase()
+      )
+        e.arbiter = usingDefault
+          ? "Betr's arbiter is the counterparty — name someone else."
+          : "The arbiter can't be the counterparty.";
+    }
     if (matchBySec <= nowSec) e.matchBy = "Must be in the future.";
     if (resolveBySec <= matchBySec)
       e.resolveBy = "Must be after the match deadline.";
@@ -139,6 +151,7 @@ export default function CreatePage() {
       visibility === Visibility.Private && counterparty.trim()
         ? (counterparty.trim() as `0x${string}`)
         : ZERO_ADDRESS;
+    const arbiterAddr = (arbiter.trim() || DEFAULT_ARBITER) as `0x${string}`;
 
     await run(
       {
@@ -149,7 +162,7 @@ export default function CreatePage() {
           question.trim(),
           visibility,
           cp,
-          arbiter.trim() as `0x${string}`,
+          arbiterAddr,
           BigInt(matchBySec),
           BigInt(resolveBySec),
         ],
@@ -272,24 +285,24 @@ export default function CreatePage() {
             </Field>
           )}
 
-          <Field
-            label="Arbiter"
-            hint={
-              <span className="inline-flex items-center gap-1">
-                <Info className="size-3" />
-                rules only if disputed
-              </span>
-            }
-            htmlFor="arbiter"
-          >
+          <Field label="Arbiter" hint="optional" htmlFor="arbiter">
             <Input
               id="arbiter"
               mono
-              placeholder="0x…  a neutral third party you both trust"
+              placeholder="0x…  leave blank to use Betr's arbiter"
               value={arbiter}
               onChange={(e) => setArbiter(e.target.value)}
             />
-            <FieldError msg={errors.arbiter} />
+            {errors.arbiter ? (
+              <FieldError msg={errors.arbiter} />
+            ) : (
+              <p className="flex items-center gap-1 text-[0.75rem] text-ink-3">
+                <Info className="size-3 shrink-0" />
+                {arbiter.trim()
+                  ? "Rules only if the bet is disputed."
+                  : `Defaults to Betr's arbiter · ${shortAddr(DEFAULT_ARBITER, 4)}`}
+              </p>
+            )}
           </Field>
 
           <div className="grid gap-6 sm:grid-cols-2">
