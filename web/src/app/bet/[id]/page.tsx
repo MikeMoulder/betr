@@ -48,7 +48,7 @@ export default function BetDetailPage() {
           </Link>
         }
       >
-        There's no bet at #{params.id}. It may not exist on this network.
+        There&apos;s no bet at #{params.id}. It may not exist on this network.
       </EmptyState>
     );
   }
@@ -84,7 +84,7 @@ export default function BetDetailPage() {
           <span>BET #{id}</span>
         </div>
         <div className="flex flex-wrap items-start justify-between gap-3">
-          <h1 className="max-w-2xl text-2xl font-semibold leading-tight tracking-tight text-ink text-balance">
+          <h1 className="display max-w-2xl text-balance text-[1.6rem] leading-tight text-ink sm:text-[1.9rem]">
             {bet.question || "Untitled bet"}
           </h1>
           <StatusBadge state={bet.state} />

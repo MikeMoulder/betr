@@ -17,11 +17,11 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        "flex flex-col items-center px-6 py-16 text-center",
+        "grid-field flex flex-col items-center px-6 py-20 text-center",
         className,
       )}
     >
-      <div className="mb-4 grid size-12 place-items-center rounded-[var(--radius-lg)] border border-line bg-surface-2 text-ink-3">
+      <div className="mb-5 grid size-14 place-items-center rounded-[var(--radius-lg)] border border-line bg-surface-2/80 text-ink-3 shadow-[0_1px_0_0_rgba(255,255,255,0.05)_inset,0_16px_40px_-20px_rgba(0,0,0,0.7)]">
         {icon}
       </div>
       <h3 className="font-medium text-ink">{title}</h3>

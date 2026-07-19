@@ -73,7 +73,7 @@ export function WalletButton() {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="inline-flex h-9 items-center gap-2 rounded-[var(--radius-sm)] border border-line bg-surface-2 pl-2.5 pr-2 transition-colors hover:border-line-strong"
+        className="inline-flex h-9 items-center gap-2 rounded-full border border-line bg-surface-2/80 pl-3 pr-2.5 shadow-[0_1px_0_0_rgba(255,255,255,0.05)_inset] transition-colors hover:border-line-strong"
       >
         <span className="size-2 rounded-full bg-win" />
         <span className="font-mono text-[0.8125rem] text-ink tnum">
@@ -94,7 +94,7 @@ export function WalletButton() {
 
       {open && (
         <div
-          className="rise absolute right-0 mt-2 w-60 rounded-[var(--radius-md)] border border-line bg-elevated p-1 shadow-2xl shadow-black/40"
+          className="rise absolute right-0 mt-2 w-60 rounded-[var(--radius-md)] border border-white/[0.08] bg-elevated p-1 shadow-2xl shadow-black/50"
           style={{ zIndex: "var(--z-dropdown)" }}
         >
           <div className="px-2.5 py-2">

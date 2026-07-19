@@ -29,11 +29,11 @@ export function BetTable({ bets }: { bets: IndexedBet[] }) {
             <Link
               key={id}
               href={`/bet/${id}`}
-              className="flex items-center gap-4 px-4 py-3.5 transition-colors hover:bg-surface-2"
+              className="group flex items-center gap-4 px-4 py-3.5 transition-colors hover:bg-surface-2/70"
             >
               {/* market */}
               <div className="min-w-0 flex-1">
-                <div className="truncate text-sm font-medium text-ink">
+                <div className="truncate text-sm font-medium text-ink transition-colors group-hover:text-brand-bright">
                   {bet.question || "Untitled bet"}
                 </div>
                 <div className="mt-1 flex items-center gap-1.5 font-mono text-[0.6875rem] text-ink-3">
@@ -81,11 +81,11 @@ export function BetTable({ bets }: { bets: IndexedBet[] }) {
                     />
                   </div>
                 ) : (
-                  <span className="font-mono text-[0.8125rem] text-ink-3">—</span>
+                  <span className="font-mono text-[0.8125rem] text-ink-3">–</span>
                 )}
               </div>
 
-              <ChevronRight className="size-4 shrink-0 text-ink-3" />
+              <ChevronRight className="size-4 shrink-0 text-ink-3 transition-[color,transform] group-hover:translate-x-0.5 group-hover:text-brand" />
             </Link>
           );
         })}

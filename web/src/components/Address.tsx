@@ -19,7 +19,7 @@ export function Address({
   const [copied, setCopied] = useState(false);
 
   if (!value)
-    return <span className={cn("font-mono text-ink-3", className)}>—</span>;
+    return <span className={cn("font-mono text-ink-3", className)}>–</span>;
 
   const copy = async () => {
     try {

@@ -1,25 +1,30 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { TopNav } from "@/components/TopNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { DynamicBackground } from "@/components/DynamicBackground";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+/* Archivo variable — width axis carries the display voice (stretched
+   grotesk headlines) while the normal width does quiet UI duty. */
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
+  axes: ["wdth"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+/* IBM Plex Mono — instrument-panel numerals, addresses, labels. */
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
   title: "Betr",
   description:
-    "Stake a bet with anyone. The winner gets paid automatically onchain — no arguing, no chasing. Built on Monad.",
+    "Stake a bet with anyone. The winner gets paid automatically onchain. No arguing, no chasing. Built on Monad.",
 };
 
 export default function RootLayout({
@@ -28,7 +33,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${archivo.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <DynamicBackground />

@@ -59,7 +59,7 @@ export default function MyBetsPage() {
         action={<WalletButton />}
       >
         Connect to see the bets you&apos;ve created, taken, or been asked to
-        arbitrate — and to withdraw your winnings.
+        arbitrate, and to withdraw your winnings.
       </EmptyState>
     );
   }
@@ -68,10 +68,10 @@ export default function MyBetsPage() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-ink">
+          <h1 className="display text-[1.75rem] text-ink sm:text-[2.1rem]">
             My Bets
           </h1>
-          <p className="mt-1 text-sm text-ink-2">
+          <p className="mt-1.5 text-sm text-ink-2">
             Everything you&apos;re staked in or refereeing.
           </p>
         </div>

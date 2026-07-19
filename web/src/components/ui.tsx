@@ -16,25 +16,25 @@ type Variant =
 type Size = "sm" | "md" | "lg";
 
 const buttonBase =
-  "inline-flex items-center justify-center gap-2 font-medium select-none whitespace-nowrap rounded-[var(--radius-sm)] transition-[background,border-color,color,box-shadow,transform] duration-150 disabled:opacity-45 disabled:pointer-events-none active:translate-y-px focus-visible:outline-2";
+  "inline-flex items-center justify-center gap-2 font-medium select-none whitespace-nowrap rounded-full transition-[background,border-color,color,box-shadow,transform,filter] duration-150 disabled:opacity-45 disabled:pointer-events-none active:translate-y-px focus-visible:outline-2";
 
 const buttonVariants: Record<Variant, string> = {
   primary:
-    "bg-brand text-brand-ink hover:bg-brand-bright shadow-[0_10px_28px_-14px_var(--color-brand)]",
+    "text-brand-ink bg-[linear-gradient(180deg,var(--color-brand-bright),var(--color-brand))] shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_12px_32px_-12px_var(--color-brand)] hover:brightness-[1.07] hover:shadow-[0_1px_0_0_rgba(255,255,255,0.4)_inset,0_14px_40px_-12px_var(--color-brand)]",
   secondary:
-    "bg-surface-2 text-ink border border-line hover:bg-elevated hover:border-line-strong",
+    "bg-surface-2/80 text-ink border border-line shadow-[0_1px_0_0_rgba(255,255,255,0.05)_inset] hover:bg-elevated hover:border-line-strong",
   outline:
     "bg-transparent text-ink border border-line hover:bg-surface-2 hover:border-line-strong",
   ghost: "bg-transparent text-ink-2 hover:bg-surface-2 hover:text-ink",
   danger:
     "bg-transparent text-loss border border-loss/35 hover:bg-loss/12 hover:border-loss/55",
-  win: "bg-win text-win-ink hover:brightness-110",
+  win: "text-win-ink bg-[linear-gradient(180deg,color-mix(in_oklch,var(--color-win)_92%,white),var(--color-win))] shadow-[0_1px_0_0_rgba(255,255,255,0.3)_inset,0_12px_32px_-12px_var(--color-win)] hover:brightness-[1.07]",
 };
 
 const buttonSizes: Record<Size, string> = {
-  sm: "h-8 px-3 text-[0.8125rem]",
-  md: "h-10 px-4 text-sm",
-  lg: "h-11 px-5 text-[0.9375rem]",
+  sm: "h-8 px-3.5 text-[0.8125rem]",
+  md: "h-10 px-5 text-sm",
+  lg: "h-12 px-6 text-[0.9375rem]",
 };
 
 export function Button({
@@ -67,9 +67,12 @@ export function Button({
 export function Panel({
   className,
   variant = "glass",
+  interactive = false,
   ...props
 }: React.HTMLAttributes<HTMLDivElement> & {
   variant?: "solid" | "glass" | "glassStrong";
+  /** Lift + brand-lit ring on hover; for panels that navigate somewhere. */
+  interactive?: boolean;
 }) {
   const surface =
     variant === "glass"
@@ -79,7 +82,12 @@ export function Panel({
         : "bg-surface border border-line";
   return (
     <div
-      className={cn(surface, "rounded-[var(--radius-lg)]", className)}
+      className={cn(
+        surface,
+        interactive && "glass-hover",
+        "rounded-[var(--radius-lg)]",
+        className,
+      )}
       {...props}
     />
   );
@@ -97,7 +105,7 @@ export function Label({
 /* ------------------------------------------------------------- Text inputs */
 
 const controlBase =
-  "w-full bg-bg-2 border border-line rounded-[var(--radius-sm)] text-ink placeholder:text-ink-3 transition-colors focus:border-brand/70 focus:bg-surface focus:outline-none";
+  "w-full bg-bg-2/80 border border-line rounded-[var(--radius-sm)] text-ink placeholder:text-ink-3 shadow-[0_1px_0_0_rgba(255,255,255,0.03)_inset] transition-[border-color,background,box-shadow] focus:border-brand/70 focus:bg-surface focus:shadow-[0_0_0_3px_color-mix(in_oklch,var(--color-brand)_14%,transparent)] focus:outline-none";
 
 export const Input = React.forwardRef<
   HTMLInputElement,
@@ -147,7 +155,7 @@ export function Segmented<T extends string | number>({
     <div
       role="tablist"
       className={cn(
-        "inline-grid gap-1 p-1 bg-bg-2 border border-line rounded-[var(--radius-md)]",
+        "inline-grid gap-1 p-1 bg-bg-2/80 border border-line rounded-full shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset]",
         className,
       )}
       style={{ gridTemplateColumns: `repeat(${options.length}, minmax(0,1fr))` }}
@@ -161,9 +169,9 @@ export function Segmented<T extends string | number>({
             aria-selected={active}
             onClick={() => onChange(o.value)}
             className={cn(
-              "inline-flex items-center justify-center gap-1.5 h-8 px-3 text-[0.8125rem] font-medium rounded-[var(--radius-sm)] transition-colors duration-150",
+              "inline-flex items-center justify-center gap-1.5 h-8 px-3.5 text-[0.8125rem] font-medium rounded-full transition-colors duration-150",
               active
-                ? "bg-surface-2 text-ink shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset]"
+                ? "bg-elevated text-ink shadow-[0_1px_0_0_rgba(255,255,255,0.07)_inset,0_4px_12px_-4px_rgba(0,0,0,0.5)]"
                 : "text-ink-3 hover:text-ink-2",
             )}
           >

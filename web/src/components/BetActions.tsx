@@ -164,7 +164,7 @@ export function BetActions({
                 onClick={() =>
                   call(
                     "acceptBet",
-                    { pending: "Matching stake…", success: "Bet matched — now live" },
+                    { pending: "Matching stake…", success: "Bet matched, now live" },
                     { value: bet.stake },
                   )
                 }
@@ -210,7 +210,7 @@ export function BetActions({
               title="Claim the outcome"
               note={`If you won, claim it. This posts a ${formatMon(
                 bond,
-              )} MON bond — refunded when it settles unless the arbiter rules against you.`}
+              )} MON bond, refunded when it settles unless the arbiter rules against you.`}
             >
               {!isConnected ? connectGate : wrongChain ? chainGate : (
                 <Button
@@ -272,7 +272,7 @@ export function BetActions({
               title="Someone claimed the win"
               note={`Disagree? Dispute it by posting a ${formatMon(
                 bond,
-              )} MON bond — this sends it to the arbiter. If you're right, you take the pot and both bonds.`}
+              )} MON bond. This sends it to the arbiter. If you're right, you take the pot and both bonds.`}
             >
               {!isConnected ? connectGate : wrongChain ? chainGate : (
                 <Button
@@ -287,7 +287,7 @@ export function BetActions({
                   }
                 >
                   <Swords className="size-4" />
-                  Dispute — I won
+                  Dispute: I won
                 </Button>
               )}
             </Action>
@@ -321,7 +321,7 @@ export function BetActions({
         if (role === "arbiter" && !expired) {
           return (
             <Action
-              title="You're the arbiter — rule the winner"
+              title="You're the arbiter: rule the winner"
               note="Both sides claim the win. Award the pot (and both bonds) to whoever actually won."
             >
               {wrongChain ? (

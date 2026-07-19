@@ -59,11 +59,11 @@ export default function MarketsPage() {
       {/* header */}
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-ink">
+          <h1 className="display text-[1.75rem] text-ink sm:text-[2.1rem]">
             Markets
           </h1>
-          <p className="mt-1 text-sm text-ink-2">
-            Public bets anyone can take. Stake, match, and settle onchain — the
+          <p className="mt-1.5 text-sm text-ink-2">
+            Public bets anyone can take. Stake, match, and settle onchain. The
             winner is paid automatically.
           </p>
         </div>
@@ -75,11 +75,11 @@ export default function MarketsPage() {
         </Link>
       </div>
 
-      {/* stat ticker */}
-      <div className="glass grid grid-cols-2 divide-line rounded-[var(--radius-lg)] sm:grid-cols-4 sm:divide-x">
+      {/* stat readout */}
+      <div className="glass grid grid-cols-2 divide-line/70 rounded-[var(--radius-lg)] sm:grid-cols-4 sm:divide-x">
         <Stat label="Value Locked" value={`${formatMon(stats.locked, 2)} MON`} />
         <Stat label="Open" value={String(stats.open)} tone="brand" />
-        <Stat label="Live" value={String(stats.live)} tone="brand" />
+        <Stat label="Live" value={String(stats.live)} tone="brand" live />
         <Stat label="Settled" value={String(stats.settled)} tone="win" />
       </div>
 
@@ -117,7 +117,7 @@ export default function MarketsPage() {
           }
         >
           {bets.length === 0
-            ? "Be the first to open a public bet. Set the question, stake, and an arbiter — anyone can take the other side."
+            ? "Be the first to open a public bet. Set the question, stake, and an arbiter. Anyone can take the other side."
             : "No bets match this filter. Try another view or create a new one."}
         </EmptyState>
       ) : (
@@ -131,16 +131,21 @@ function Stat({
   label,
   value,
   tone,
+  live,
 }: {
   label: string;
   value: string;
   tone?: "brand" | "win";
+  live?: boolean;
 }) {
   return (
-    <div className="px-4 py-3">
-      <div className="label">{label}</div>
+    <div className="px-5 py-4">
+      <div className="label flex items-center gap-1.5">
+        {live && <span className="size-1.5 rounded-full bg-brand live-dot" />}
+        {label}
+      </div>
       <div
-        className={`mt-1 font-mono text-lg tnum ${
+        className={`mt-1.5 font-mono text-xl font-medium tnum ${
           tone === "brand"
             ? "text-brand"
             : tone === "win"

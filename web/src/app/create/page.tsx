@@ -109,7 +109,7 @@ export default function CreatePage() {
       const effective = (arb || DEFAULT_ARBITER).toLowerCase();
       if (address && effective === address.toLowerCase())
         e.arbiter = usingDefault
-          ? "You're Betr's arbiter — name someone else for this bet."
+          ? "You're Betr's arbiter. Name someone else for this bet."
           : "The arbiter can't be you.";
       else if (
         visibility === Visibility.Private &&
@@ -117,7 +117,7 @@ export default function CreatePage() {
         effective === counterparty.trim().toLowerCase()
       )
         e.arbiter = usingDefault
-          ? "Betr's arbiter is the counterparty — name someone else."
+          ? "Betr's arbiter is the counterparty. Name someone else."
           : "The arbiter can't be the counterparty.";
     }
     if (matchBySec <= nowSec) e.matchBy = "Must be in the future.";
@@ -183,10 +183,10 @@ export default function CreatePage() {
           <ArrowLeft className="size-4" />
           Markets
         </Link>
-        <h1 className="mt-3 text-2xl font-semibold tracking-tight text-ink">
+        <h1 className="display mt-3 text-[1.75rem] text-ink sm:text-[2.1rem]">
           Create a bet
         </h1>
-        <p className="mt-1 text-sm text-ink-2">
+        <p className="mt-1.5 text-sm text-ink-2">
           Escrow your stake now. Whoever takes the other side matches it, and
           the winner is paid automatically.
         </p>
@@ -264,7 +264,7 @@ export default function CreatePage() {
             <p className="text-[0.75rem] leading-relaxed text-ink-3">
               {visibility === Visibility.Public
                 ? "Listed on the Markets dashboard. Anyone can take the other side."
-                : "Unlisted. Share the link with someone — or name their wallet below to lock it to them."}
+                : "Unlisted. Share the link with someone, or name their wallet below to lock it to them."}
             </p>
           </Field>
 
@@ -339,17 +339,17 @@ export default function CreatePage() {
 
             <dl className="flex flex-col gap-2.5 text-sm">
               <Row label="You stake">
-                {stakeWei !== null ? `${formatMon(stakeWei)} MON` : "—"}
+                {stakeWei !== null ? `${formatMon(stakeWei)} MON` : "–"}
               </Row>
               <Row label="Opponent stakes">
-                {stakeWei !== null ? `${formatMon(stakeWei)} MON` : "—"}
+                {stakeWei !== null ? `${formatMon(stakeWei)} MON` : "–"}
               </Row>
               <div className="my-1 h-px bg-line" />
               <Row label="Total pot" strong>
-                {stakeWei !== null ? `${formatMon(stakeWei * 2n)} MON` : "—"}
+                {stakeWei !== null ? `${formatMon(stakeWei * 2n)} MON` : "–"}
               </Row>
               <Row label="Dispute bond (20%)">
-                {bondWei !== null ? `${formatMon(bondWei)} MON` : "—"}
+                {bondWei !== null ? `${formatMon(bondWei)} MON` : "–"}
               </Row>
             </dl>
 

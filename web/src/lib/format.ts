@@ -1,13 +1,13 @@
 import { formatEther } from "viem";
 
 export function shortAddr(addr?: string, size = 4): string {
-  if (!addr || addr.length < 10) return addr ?? "—";
+  if (!addr || addr.length < 10) return addr ?? "–";
   return `${addr.slice(0, 2 + size)}…${addr.slice(-size)}`;
 }
 
 /** Format wei as MON, trimmed to `maxFrac` decimals without trailing zeros. */
 export function formatMon(wei?: bigint, maxFrac = 4): string {
-  if (wei === undefined || wei === null) return "—";
+  if (wei === undefined || wei === null) return "–";
   const s = formatEther(wei);
   const [int, frac = ""] = s.split(".");
   if (!frac) return int;

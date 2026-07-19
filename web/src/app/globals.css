@@ -1,48 +1,54 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------ *
- * Betr — design tokens
- * Committed dark "trading-desk" theme. Cool-tinted neutrals (hue 230),
- * mineral-teal brand (hue 195), money semantics in green / red / amber.
+ * Betr — design tokens · "Obsidian desk"
+ * Smoked-glass instrument panels over a deep indigo-black field.
+ * Cold neutrals (hue 255), mineral-teal brand (hue 195), a violet
+ * aurora reserved for ambient light, money semantics in green/red/amber.
+ * Type: Archivo (width axis for display) + IBM Plex Mono for data.
  * ------------------------------------------------------------------ */
 
 @theme {
-  /* Neutrals — the terminal chrome */
-  --color-bg: oklch(0.164 0.008 233);
-  --color-bg-2: oklch(0.186 0.009 233);
-  --color-surface: oklch(0.208 0.010 233);
-  --color-surface-2: oklch(0.246 0.011 233);
-  --color-elevated: oklch(0.284 0.013 233);
-  --color-line: oklch(0.30 0.012 233);
-  --color-line-strong: oklch(0.40 0.016 233);
+  /* Neutrals — obsidian, indigo-cast */
+  --color-bg: oklch(0.129 0.014 255);
+  --color-bg-2: oklch(0.152 0.015 255);
+  --color-surface: oklch(0.178 0.016 255);
+  --color-surface-2: oklch(0.215 0.017 255);
+  --color-elevated: oklch(0.258 0.018 255);
+  --color-line: oklch(0.29 0.016 255);
+  --color-line-strong: oklch(0.39 0.02 255);
 
-  --color-ink: oklch(0.972 0.004 233);
-  --color-ink-2: oklch(0.808 0.010 233);
-  --color-ink-3: oklch(0.664 0.013 233);
+  --color-ink: oklch(0.975 0.003 255);
+  --color-ink-2: oklch(0.812 0.012 255);
+  --color-ink-3: oklch(0.672 0.016 255);
 
-  /* Brand — mineral teal */
-  --color-brand: oklch(0.760 0.128 195);
-  --color-brand-bright: oklch(0.835 0.135 195);
-  --color-brand-ink: oklch(0.165 0.030 195);
-  --color-brand-dim: oklch(0.520 0.088 195);
+  /* Brand — mineral teal, sharpened */
+  --color-brand: oklch(0.78 0.135 195);
+  --color-brand-bright: oklch(0.85 0.145 195);
+  --color-brand-ink: oklch(0.16 0.032 195);
+  --color-brand-dim: oklch(0.53 0.09 195);
+
+  /* Aurora violet — ambient light + gradients only, never text */
+  --color-glow: oklch(0.58 0.2 295);
 
   /* Money / state semantics */
-  --color-win: oklch(0.775 0.150 156);
+  --color-win: oklch(0.775 0.15 156);
   --color-win-ink: oklch(0.185 0.045 156);
   --color-loss: oklch(0.672 0.192 25);
-  --color-loss-ink: oklch(0.175 0.050 25);
-  --color-warn: oklch(0.815 0.130 82);
-  --color-warn-ink: oklch(0.205 0.050 82);
+  --color-loss-ink: oklch(0.175 0.05 25);
+  --color-warn: oklch(0.815 0.13 82);
+  --color-warn-ink: oklch(0.205 0.05 82);
 
   /* Fonts (variables set by next/font in layout.tsx) */
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", monospace;
 
-  /* Radii — small and sharp, like instrument panels */
-  --radius-xs: 3px;
-  --radius-sm: 5px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  /* Radii — soft panels, crisp controls */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
 
   /* Easing */
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
@@ -75,7 +81,6 @@
     background: var(--color-bg);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    font-feature-settings: "cv01", "ss01";
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -121,12 +126,19 @@
 }
 
 @layer components {
-  /* Mono micro-label — used for column headers and field labels only,
-     never as a per-section eyebrow. */
+  /* Display type — Archivo stretched wide. Headlines only, never UI labels. */
+  .display {
+    font-stretch: 116%;
+    letter-spacing: -0.022em;
+    font-weight: 600;
+  }
+
+  /* Mono micro-label — column headers and field labels only,
+     never a per-section eyebrow. */
   .label {
     font-family: var(--font-mono);
     font-size: 0.6875rem;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.09em;
     text-transform: uppercase;
     color: var(--color-ink-3);
     font-weight: 500;
@@ -146,30 +158,95 @@
     mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 75%);
   }
 
-  /* Glassmorphism — used purposefully on nav, hero, and feature cards
-     (never on dense data tables, where blur hurts numeric legibility). */
+  /* ---------------------------------------------------------------- *
+   * Glass — smoked panels with a lit top edge.
+   * The ring is a gradient hairline drawn by a masked pseudo-element:
+   * bright where light hits (top), fading to nothing at the base.
+   * Purposeful surfaces only — nav, panels, feature cards. Never on
+   * dense data where blur hurts numeric legibility.
+   * ---------------------------------------------------------------- */
+  .glass,
+  .glass-strong {
+    position: relative;
+    isolation: isolate;
+  }
   .glass {
-    background: color-mix(in oklch, var(--color-surface) 66%, transparent);
-    backdrop-filter: blur(18px) saturate(1.4);
-    -webkit-backdrop-filter: blur(18px) saturate(1.4);
-    border: 1px solid color-mix(in oklch, white 9%, transparent);
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in oklch, var(--color-surface) 78%, transparent),
+        color-mix(in oklch, var(--color-surface) 52%, transparent)
+      );
+    backdrop-filter: blur(20px) saturate(1.45);
+    -webkit-backdrop-filter: blur(20px) saturate(1.45);
     box-shadow:
       0 1px 0 0 color-mix(in oklch, white 7%, transparent) inset,
       0 24px 60px -32px rgba(0, 0, 0, 0.7);
   }
   .glass-strong {
-    background: color-mix(in oklch, var(--color-surface) 82%, transparent);
-    backdrop-filter: blur(26px) saturate(1.5);
-    -webkit-backdrop-filter: blur(26px) saturate(1.5);
-    border: 1px solid color-mix(in oklch, white 10%, transparent);
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in oklch, var(--color-surface) 92%, transparent),
+        color-mix(in oklch, var(--color-surface) 68%, transparent)
+      );
+    backdrop-filter: blur(28px) saturate(1.55);
+    -webkit-backdrop-filter: blur(28px) saturate(1.55);
     box-shadow:
       0 1px 0 0 color-mix(in oklch, white 8%, transparent) inset,
       0 30px 70px -34px rgba(0, 0, 0, 0.75);
   }
+  .glass::before,
+  .glass-strong::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklch, white 16%, transparent),
+      color-mix(in oklch, white 6%, transparent) 38%,
+      color-mix(in oklch, white 2.5%, transparent)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Interactive glass — lift + brand-lit ring on hover */
+  .glass-hover {
+    transition:
+      transform 0.2s var(--ease-out-quart),
+      box-shadow 0.2s var(--ease-out-quart);
+  }
+  .glass-hover:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 1px 0 0 color-mix(in oklch, white 10%, transparent) inset,
+      0 0 0 1px color-mix(in oklch, var(--color-brand) 18%, transparent),
+      0 20px 50px -20px color-mix(in oklch, var(--color-brand) 14%, rgba(0, 0, 0, 0.75));
+  }
+
   .glass-nav {
-    background: color-mix(in oklch, var(--color-bg) 60%, transparent);
-    backdrop-filter: blur(22px) saturate(1.35);
-    -webkit-backdrop-filter: blur(22px) saturate(1.35);
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in oklch, var(--color-surface) 88%, transparent),
+        color-mix(in oklch, var(--color-surface) 66%, transparent)
+      );
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    box-shadow:
+      0 1px 0 0 color-mix(in oklch, white 7%, transparent) inset,
+      0 16px 44px -20px rgba(0, 0, 0, 0.65);
   }
 }
 
@@ -228,26 +305,18 @@
   0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
   50% { transform: translateY(-16px) rotate(var(--r, 0deg)); }
 }
-@keyframes betr-spin-slow {
-  to { transform: rotate(360deg); }
-}
-@keyframes betr-hue {
-  0%, 100% { opacity: 0.9; }
-  50% { opacity: 0.55; }
-}
 
 .orb {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(64px);
+  filter: blur(72px);
   will-change: transform;
 }
-.drift-a { animation: betr-drift-a 24s var(--ease-out-quart) infinite; }
-.drift-b { animation: betr-drift-b 30s var(--ease-out-quart) infinite; }
-.drift-c { animation: betr-drift-c 27s var(--ease-out-quart) infinite; }
+.drift-a { animation: betr-drift-a 26s var(--ease-out-quart) infinite; }
+.drift-b { animation: betr-drift-b 32s var(--ease-out-quart) infinite; }
+.drift-c { animation: betr-drift-c 29s var(--ease-out-quart) infinite; }
 .float-slow { animation: betr-float 9s var(--ease-out-quart) infinite; }
 .float-slower { animation: betr-float 13s var(--ease-out-quart) infinite; }
-.spin-slow { animation: betr-spin-slow 48s linear infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   .live-dot,
@@ -257,9 +326,11 @@
   .drift-b,
   .drift-c,
   .float-slow,
-  .float-slower,
-  .spin-slow {
+  .float-slower {
     animation: none;
+  }
+  .glass-hover:hover {
+    transform: none;
   }
   *,
   *::before,
